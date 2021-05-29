@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Customer from "./components/customer";
+import Merchant from "./components/merchant";
+import Shipper from "./components/shipper";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/customer">
+          <Customer />
+        </Route>
+        <Route path="/merchant">
+          <Merchant />
+        </Route>
+        <Route path="/shipper">
+          <Shipper />
+        </Route>
+        <Route path="/">
+          <ul className="menu">
+            <li className="menu__item">
+              <Link className="menu__link" to="/customer">
+                Customer
+              </Link>
+            </li>
+
+            <li className="menu__item">
+              <Link className="menu__link" to="/merchant">
+                Merchant
+              </Link>
+            </li>
+
+            <li className="menu__item">
+              <Link className="menu__link" to="/shipper">
+                Shipper
+              </Link>
+            </li>
+          </ul>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
