@@ -11,15 +11,17 @@ import generateObjectID from "../customer/util";
 
 const config = { SERVER_URL_SOCKET: "http://localhost:8010" };
 
-const infoShipper = {
-  id: "60abbfaabfbb5a38c0558d40",
+const infoShipper = (shipperID) => ({
+  // id: "60abbfaabfbb5a38c0558d40",
+  id: shipperID || "61b7a2fc53834634c61332b3",
   // id: generateObjectID(),
   exp: new Date().getTime() / 1000 + 60 * 60 * 24,
   iat: new Date().getTime() / 1000,
   role: "shipper",
-};
+});
 
-const getToken = () => jwt.sign(infoShipper, "final-project");
+const getToken = (shipperID) =>
+  jwt.sign(infoShipper(shipperID), "final-project");
 
 console.log(getToken());
 
@@ -28,8 +30,8 @@ const Socket = class {
     this.socket = null;
   }
 
-  async connect() {
-    const token = await getToken();
+  async connect(shipperID) {
+    const token = await getToken(shipperID);
 
     this.socket = io.connect(config.SERVER_URL_SOCKET);
 
@@ -77,6 +79,10 @@ const Socket = class {
       store.dispatch(updateStatusShipper(res.data));
     });
 
+    this.socket.on(TAG_EVENT.RESPONSE_CHAT, (res) => console.log(res));
+
+    this.socket.on(TAG_EVENT.RESPONSE_NOTIFICATION, (res) => console.log(res));
+
     return this.socket;
   }
 
@@ -116,6 +122,10 @@ const Socket = class {
 
   removeCallback(tag) {
     this.socket.removeListener(tag);
+  }
+
+  sendMess(roomID, message) {
+    this.socket.emit(TAG_EVENT.REQUEST_CHAT, { roomID, message });
   }
 };
 

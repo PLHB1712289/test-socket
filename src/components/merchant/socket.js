@@ -8,7 +8,14 @@ const config = { SERVER_URL_SOCKET: "http://localhost:8010" };
 
 const infoMerchant = {
   // id: "605590f06480d31ec55b289d",
-  id: "60a77a2eb7245f28182cf831",
+  // id: "60a77a2eb7245f28182cf831",
+
+  // Manager Vo Hoai An
+  // id: "60b8acf78a64a406a84782dc",
+
+  id: "60b8acf78a64a406a84782ac",
+
+  // id: "60baeece7ea780067f4641ff",
   exp: new Date().getTime() / 1000 + 60 * 60 * 24,
   role: "merchant",
   iat: new Date().getTime() / 1000,
@@ -67,6 +74,10 @@ const Socket = class {
 
     this.socket.on(TAG_EVENT.RESPONSE_CHANGE_STATUS_ROOM, (res) => {
       store.dispatch(updateStatusMerchant(res.data));
+    });
+
+    this.socket.on(TAG_EVENT.RESPONSE_NOTIFICATION, (notify) => {
+      console.log(notify);
     });
 
     return this.socket;

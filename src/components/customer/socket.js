@@ -78,9 +78,17 @@ const Socket = class {
       store.dispatch(updateStatusCustomer(res.data));
     });
 
+    this.socket.on(TAG_EVENT.RESPONSE_CHAT, (res) => console.log(res));
+
     this.socket.on(TAG_EVENT.RESPONSE_SHIPPER_CHANGE_COOR, (res) => {
       console.log(res);
     });
+
+    this.socket.on(TAG_EVENT.RESPONSE_UPDATE_SHIPPER, (res) =>
+      console.log(res)
+    );
+
+    this.socket.on(TAG_EVENT.RESPONSE_NOTIFICATION, (res) => console.log(res));
 
     return this.socket;
   }
@@ -111,6 +119,10 @@ const Socket = class {
     this.socket.emit(TAG_EVENT.REQUEST_JOIN_ROOM, { orderID: order.orderID });
 
     store.dispatch(newOrder({ id: order.orderID, status: 0 }));
+  }
+
+  sendMess(roomID, message) {
+    this.socket.emit(TAG_EVENT.REQUEST_CHAT, { roomID, message });
   }
 };
 

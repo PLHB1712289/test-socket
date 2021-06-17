@@ -5,12 +5,11 @@ import socket from "./socket";
 
 const Shipper = () => {
   useEffect(() => {
-    socket.connect();
-
     return () => socket.disconnect();
   }, []);
 
   const listOrder = useSelector((state) => state.shipper);
+  const [shipperID, setShipperID] = useState("61b7a2fc53834634c61332b3");
 
   const [coor, setCoor] = useState({ lat: 0, lng: 0 });
 
@@ -20,9 +19,27 @@ const Shipper = () => {
     socket.updateCoor(coor);
   };
 
+  const [room, setRoom] = useState("");
+  const [mess, setMess] = useState("");
+
   return (
     <div>
-      Shipper
+      listShipper: 60abbfaabfbb5a38c0558d40, 61b7a2fc53834634c61332b3 Shipper:{" "}
+      {shipperID}
+      <div>
+        ID:
+        <input
+          value={shipperID}
+          onChange={(e) => setShipperID(e.target.value)}
+        />
+        <button
+          onClick={() => {
+            socket.connect(shipperID);
+          }}
+        >
+          connect
+        </button>
+      </div>
       <form onSubmit={handleSubmiForm}>
         <input
           type="number"
@@ -43,6 +60,27 @@ const Shipper = () => {
 
         <button type="submit">Update Coor</button>
       </form>
+      <div style={{ margin: "20px 0" }}>
+        Room:{" "}
+        <input
+          type="text"
+          value={room}
+          onChange={(e) => setRoom(e.target.value)}
+        />
+        Mess:
+        <input
+          type="text"
+          value={mess}
+          onChange={(e) => setMess(e.target.value)}
+        />
+        <button
+          onClick={() => {
+            socket.sendMess(room, mess);
+          }}
+        >
+          Send message
+        </button>
+      </div>
       <div>
         {listOrder.map((order) => (
           <div key={order.id}>

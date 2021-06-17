@@ -16,6 +16,9 @@ const Customer = () => {
   const listOrder = useSelector((state) => state.customer);
   const [restaurantID, setRestaurantID] = useState("");
 
+  const [room, setRoom] = useState("");
+  const [mess, setMess] = useState("");
+
   return (
     <div className="customer">
       <div>
@@ -27,7 +30,6 @@ const Customer = () => {
 
         <button
           onClick={async () => {
-            //  socket.createOrder(restaurantID);
             const data = {
               foods: [
                 {
@@ -42,7 +44,7 @@ const Customer = () => {
                 },
               ],
               subtotal: 139000,
-              shippingfee: 10000,
+              shippingfee: 15000,
               address: "273 Nguyễn Văn Cừ, P. 4, Quận 5, TP. HCM",
               phone: "0331234567",
               longitude: 100.1234567,
@@ -57,11 +59,35 @@ const Customer = () => {
               },
             });
 
+            console.log(res.data.data);
+
             const orderID = res.data.data.id;
             dispatch(newOrder({ id: orderID, status: 0 }));
           }}
         >
           Create Order
+        </button>
+      </div>
+
+      <div style={{ margin: "20px 0" }}>
+        Room:{" "}
+        <input
+          type="text"
+          value={room}
+          onChange={(e) => setRoom(e.target.value)}
+        />
+        Mess:
+        <input
+          type="text"
+          value={mess}
+          onChange={(e) => setMess(e.target.value)}
+        />
+        <button
+          onClick={() => {
+            socket.sendMess(room, mess);
+          }}
+        >
+          Send message
         </button>
       </div>
 

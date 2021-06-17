@@ -22,7 +22,8 @@ const Merchant = () => {
 
   return (
     <div>
-      <div>Merchant ID: 605590f06480d31ec55b289d</div>
+      <div>Merchant ID: 60a771e2b7245f28182cf82f</div>
+      <div>Merchant name: Trà Sữa Tiên Hưởng - Cống Quỳnh</div>
       <div>
         {listOrder.map((order) => (
           <div key={order.id} style={{ display: "flex" }}>
